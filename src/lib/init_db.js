@@ -51,7 +51,10 @@ db.serialize(() => {
                 // Insert the initial/hardcoded event subscriptions into subscriptions table
                 const insertSql = `INSERT INTO subscriptions(accountId, subscriptionId, eventId) VALUES(?, ?, ?)`;
                 for(let v in initalEventSubscriptions){
-                    db.run(insertSql, v, function (err) {
+                    const aid = initalEventSubscriptions[v].accountId;
+                    const sid = initalEventSubscriptions[v].subscriptionId;
+                    const eid = initalEventSubscriptions[v].eventId;
+                    db.run(insertSql, aid, sid, eid, function (err) {
                         if (err) {
                             return console.error(err.message);
                         }
