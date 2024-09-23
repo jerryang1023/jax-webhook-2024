@@ -1,27 +1,22 @@
-import redisClient from '@/lib/redis';
+import db from '@/lib/db'
+import {eventQueue} from '@/lib/mq'
 
 export async function POST(req, res){
-    var key = String("trap:");
-
-    if(req.nextUrl.searchParams.get("trapName")){
-        key = key.concat(req.nextUrl.searchParams.get("trapName"))
-        if(await redisClient.exists(key, (err, exists) => {
-            if (err) throw err;
-            return exists;
-        }) == 1){
-            return new Response("trap already exists in redis!", {
-                status: 400,
-            });
+    const insertSql = `INSERT INTO traps(accountId, setTime) VALUES (?, ?)`;
+    const accountId = req.nextUrl.searchParams.get("accountId")
+    await db.run(insertSql, [accountId, Date.now()], (err) => {
+        if (err) {
+            return console.error(err.message);
         }
-    }
-    else{
-        key = key.concat(Math.random().toString(36).substring(2))
-    }
+        const id = this.lastID;
+        console.log(`Rows inserted, ID ${id}`);
+    });
 
-    redisClient.set(key, "value")
-    //redisClient.set(key, "value", 'EX', 60)
+    await eventQueue.add('webhookEvent_1', {
+        source: accountId
+    })
 
-    return new Response("inserted into reids", {
+    return new Response("Set new trap!", {
         status: 200,
     });
 }

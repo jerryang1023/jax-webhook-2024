@@ -1,6 +1,11 @@
 version: "3.7"
 services:
-  redis:
+  redis1:
     image: "docker.io/redis:7-alpine"
     ports:
       - "8888:6379"
+  redis2:
+    image: "docker.io/redis:7-alpine"
+    ports:
+      - "9999:6379"
+
