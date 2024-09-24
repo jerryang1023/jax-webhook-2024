@@ -12,8 +12,8 @@ export async function POST(req, res){
         console.log(`Rows inserted, ID ${id}`);
     });
 
-    await eventQueue.add('webhookEvent_1', {
-        source: accountId
+    await eventQueue.add('trap.set', {
+        accountId: accountId
     })
 
     return new Response("Set new trap!", {
