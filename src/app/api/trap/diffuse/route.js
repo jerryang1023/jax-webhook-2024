@@ -1,6 +1,4 @@
 import db from '@/lib/db'
-import {eventQueue} from "@/lib/mq.js";
-
 export async function POST(req, res) {
     //db query to 'diffuse' a trap
     const id = req.nextUrl.searchParams.get("id")
@@ -13,11 +11,6 @@ export async function POST(req, res) {
 
     const dbres = await db.run("DELETE FROM traps WHERE " +
         "id=(?)", id);
-
-    // add trap.diffuse event to event queue
-    await eventQueue.add('trap.diffuse', {
-        id: id
-    })
 
     // Return the items as a JSON response
     return new Response(dbres.changes > 0 ? 'Trap has been diffused' : "No such trap was found", {

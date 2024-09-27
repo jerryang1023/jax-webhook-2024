@@ -1,6 +1,4 @@
 import db from '@/lib/db'
-import {eventQueue} from '@/lib/mq'
-
 export async function POST(req, res){
     // insert sql statement to add a new trap
     const insertSql = `INSERT INTO traps(accountId, setTime) VALUES (?, ?)`;
@@ -21,12 +19,6 @@ export async function POST(req, res){
         }
     });
     console.log("New trap inserted into database, accountId: " + accountId + ", /trap/set success")
-
-    // add trap.set event into queue
-    await eventQueue.add('trap.set', {
-        accountId: accountId
-    })
-    console.log("Event type trap.set inserted into event queue")
 
     return new Response("Set new trap!", {
         status: 200,
