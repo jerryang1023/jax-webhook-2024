@@ -18,7 +18,6 @@ async function processWebhookEvent(eventName, data) {
         await webhookQueue.add(eventName, {
             messageId: messageId,
             endpoint: endpoint,
-            secretKey: items[i].secretKey,
             payload: {
                 type: eventName,
                 timestamp: Date.now(),

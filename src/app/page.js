@@ -1,6 +1,5 @@
-import Image from "next/image";
 import styles from "./page.module.css";
-import {eventWorker, webhookWorker, retryWorker} from "@/lib/handler";
+import {eventWorker, webhookWorker} from "@/lib/handler";
 export default function Home() {
 
     // Redis queue workers
@@ -12,10 +11,6 @@ export default function Home() {
 
     webhookWorker.on('failed', (job, err) => {
         console.log(`Webhook Worker job: ${job.id} has failed with ${err.message}`);
-    });
-
-    retryWorker.on('failed', (job, err) => {
-        console.log(`Retry Worker job: ${job.id} has failed with ${err.message}`);
     });
 
   return (
