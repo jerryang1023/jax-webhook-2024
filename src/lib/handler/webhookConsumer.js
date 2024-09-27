@@ -1,6 +1,6 @@
 import {Worker} from "bullmq";
 import {retryQueue} from "@/lib/mq.js";
-import {createHmac} from 'node:crypto';
+import {Webhook} from 'standardwebhooks';
 
 const webhookWorker = new Worker('Webhooks', async (job) => {
     // Send webhook event to endpoint
@@ -11,18 +11,19 @@ const webhookWorker = new Worker('Webhooks', async (job) => {
 
     const payload = job.data.payload
     const data = payload.data
-    const eventTimestamp = payload.timestamp
     console.log("Producing new webhook, messageId: " + messageId )
 
-    const hmac = createHmac('sha256', secretKey).update(messageId + timestamp + JSON.stringify(payload))
+    const payloadStr = JSON.stringify(payload)
+    const webhook = new Webhook(secretKey)
+    const signature = webhook.sign(messageId, timestamp, payloadStr);
 
     await fetch(endpoint, {
         method: "POST",
-        body: JSON.stringify(payload),
+        body: payloadStr,
         headers: {
             'webhook-id': messageId,
-            'webhook-timestamp': Date.now(),
-            'webhook-signature': hmac,
+            'webhook-timestamp': timestamp,
+            'webhook-signature': signature,
             'Content-type': 'application/json'
         }
     }).then(async (res) => {
@@ -40,7 +41,7 @@ const webhookWorker = new Worker('Webhooks', async (job) => {
             retryCount: 0,
             payload: {
                 type: "retry_webhook",
-                timestamp: eventTimestamp,
+                timestamp: payload.timestamp,
                 data: data
             }
         }, {delay: 5000})
