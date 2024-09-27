@@ -12,22 +12,18 @@ async function processWebhookEvent(eventName, data) {
         }
     });
 
-
     for(const i in items){
-        console.log(items[i])
-
         const endpoint = items[i].endpoint
-        const payload = {
-            type: eventName,
-            timestamp: Date.now(),
-            data: {
-                accountId: data.accountId
-            }
-        }
-
-        await webhookQueue.add('eventType 1', {
+        const messageId = "webhook_" + Math.random().toString(36).substring(2);
+        await webhookQueue.add(eventName, {
+            messageId: messageId,
             endpoint: endpoint,
-            payload: payload
+            secretKey: items[i].secretKey,
+            payload: {
+                type: eventName,
+                timestamp: Date.now(),
+                data: data
+            }
         })
     }
 }
@@ -36,7 +32,9 @@ const eventWorker = new Worker('Events', async (job) => {
     console.log("Processing event type: " + job.name)
     switch(job.name){
         case 'trap.set':
-            await processWebhookEvent('trap.set', job.data)
+        case 'trap.diffuse':
+            // default webhook processors
+            await processWebhookEvent(job.name, job.data)
             break;
         default:
             console.log("Unknown event type found in redis events")
