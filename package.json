@@ -18,9 +18,5 @@
     "sqlite3": "^5.1.7",
     "standardwebhooks": "^1.0.0"
   },
-  "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.9"
-  },
   "type": "module"
 }
