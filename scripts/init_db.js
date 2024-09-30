@@ -1,4 +1,4 @@
-import sqlite3  from "sqlite3"
+import sqlite3 from "sqlite3"
 
 // Connecting to or creating a new SQLite database file
 const db = new sqlite3.Database(
@@ -17,9 +17,9 @@ db.serialize(() => {
     db.run(
         `CREATE TABLE IF NOT EXISTS traps
          (
-             id      INTEGER PRIMARY KEY,
-             accountId   TEXT,
-             setTime INTEGER
+             id        INTEGER PRIMARY KEY,
+             accountId TEXT,
+             setTime   INTEGER
          )`,
         (err) => {
             if (err) {
@@ -31,16 +31,16 @@ db.serialize(() => {
                         return console.error(err.message);
                     }
                     console.log("All rows deleted from trap");
+
+                    //   Close the database connection after all insertions are done
+                    db.close((err) => {
+                        if (err) {
+                            return console.error(err.message);
+                        }
+                        console.log("Closed the database connection.");
+                    });
                 }
             )
         }
     )
-
-    //   Close the database connection after all insertions are done
-    db.close((err) => {
-        if (err) {
-            return console.error(err.message);
-        }
-        console.log("Closed the database connection.");
-    });
 });
