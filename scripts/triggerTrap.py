@@ -20,6 +20,7 @@ while True:
         myresult = mycursor.fetchall()
 
         for x in myresult:
+            print("TRAP TRIGGERED")
             print(x)
 
 
