@@ -8,4 +8,3 @@ services:
     image: "docker.io/redis:7-alpine"
     ports:
       - "9999:6379"
-
