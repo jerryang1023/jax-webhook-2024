@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "c78ded90-134a-45d8-b167-96bda6b14e08",
+		"name": "JAX 2024 Webhook API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "21490097"
+	},
+	"item": [
+		{
+			"name": "Check traps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{local_env}}/api/trap"
+			},
+			"response": []
+		},
+		{
+			"name": "Set trap",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{local_env}}api/trap/set?accountId=jyang",
+					"host": [
+						"{{local_env}}api"
+					],
+					"path": [
+						"trap",
+						"set"
+					],
+					"query": [
+						{
+							"key": "accountId",
+							"value": "jyang"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Diffuse trap",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountId\": \"t232332om\",\n    \"subscriptionId\": \"123123123333333123\",\n    \"eventId\": 1221211,\n    \"endpoint\": \"end32323point.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local_env}}/api/trap/diffuse?id=1",
+					"host": [
+						"{{local_env}}"
+					],
+					"path": [
+						"api",
+						"trap",
+						"diffuse"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check event subscriptions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{local_env}}/api/event_subscriptions"
+			},
+			"response": []
+		},
+		{
+			"name": "Add event subscription",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountId\": \"jyang\",\n    \"eventId\": 2,\n    \"endpoint\": \"https://play.svix.com/in/e_5uiEbP2lSP4vrWsgatgWJ2Ww6Jp/\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{local_env}}/api/event_subscriptions/add"
+			},
+			"response": []
+		},
+		{
+			"name": "delete event subscription",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountId\": \"t232332om\",\n    \"subscriptionId\": \"123123123333333123\",\n    \"eventId\": 1221211,\n    \"endpoint\": \"end32323point.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local_env}}api/event_subscriptions/remove?subscriptionId=SID_cww3hbqhh3h",
+					"host": [
+						"{{local_env}}api"
+					],
+					"path": [
+						"event_subscriptions",
+						"remove"
+					],
+					"query": [
+						{
+							"key": "subscriptionId",
+							"value": "SID_cww3hbqhh3h"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
