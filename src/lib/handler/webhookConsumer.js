@@ -1,28 +1,30 @@
 import {Worker} from "bullmq";
 import {retryQueue} from "@/lib/mq.js";
-import {createHmac} from 'node:crypto';
+import {Webhook} from 'standardwebhooks';
 
 const webhookWorker = new Worker('Webhooks', async (job) => {
     // Send webhook event to endpoint
     const endpoint = job.data.endpoint
     const messageId = job.data.messageId
     const secretKey = job.data.secretKey
-    const timestamp = Date.now()
+    const now = new Date()
 
     const payload = job.data.payload
     const data = payload.data
     const eventTimestamp = payload.timestamp
     console.log("Producing new webhook, messageId: " + messageId )
 
-    const hmac = createHmac('sha256', secretKey).update(messageId + timestamp + JSON.stringify(payload))
+    const payloadStr = JSON.stringify(payload)
+    const webhook = new Webhook(secretKey)
+    const signature = webhook.sign(messageId, now, payloadStr);
 
     await fetch(endpoint, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
             'webhook-id': messageId,
-            'webhook-timestamp': Date.now(),
-            'webhook-signature': hmac,
+            'webhook-timestamp': now.getTime(),
+            'webhook-signature': signature,
             'Content-type': 'application/json'
         }
     }).then(async (res) => {

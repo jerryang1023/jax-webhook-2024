@@ -15,7 +15,8 @@
     "react-dom": "^18",
     "redis": "^4.7.0",
     "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "standardwebhooks": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^8",
