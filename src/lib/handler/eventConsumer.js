@@ -30,15 +30,8 @@ async function processWebhookEvent(eventName, data) {
 
 const eventWorker = new Worker('Events', async (job) => {
     console.log("Processing event type: " + job.name)
-    switch(job.name){
-        case 'trap.set':
-        case 'trap.diffuse':
-            // default webhook processors
-            await processWebhookEvent(job.name, job.data)
-            break;
-        default:
-            console.log("Unknown event type found in redis events")
-    }
+
+    await processWebhookEvent(job.name, job.data)
 
     }, { connection: {
         host: "127.0.0.1",

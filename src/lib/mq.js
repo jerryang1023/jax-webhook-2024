@@ -1,6 +1,5 @@
 import {Queue} from 'bullmq';
 
-
 export const eventQueue = new Queue('Events', { connection: {
         host: "127.0.0.1",
         port: 8888
