@@ -2,7 +2,7 @@ import sqlite3 from "sqlite3"
 
 // Connecting to or creating a new SQLite database file
 const db = new sqlite3.Database(
-    "./collection.db",
+    "../collection.db",
     sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     (err) => {
         if (err) {
